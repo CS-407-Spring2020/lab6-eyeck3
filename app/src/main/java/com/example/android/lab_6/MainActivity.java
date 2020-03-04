@@ -1,11 +1,16 @@
 package com.example.android.lab_6;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
-
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
+
+    // Somewhere in Australia
+    private final LatLng mDestinationLatLng = new LatLng(-33.8523341, 151.2106085);
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,5 +19,10 @@ public class MainActivity extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_map);
+
+        mapFragment.getMapAsync(googleMap -> {
+            mMap = googleMap;
+            // code to display marker
+        });
     }
 }
