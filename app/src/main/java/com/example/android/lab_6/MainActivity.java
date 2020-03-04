@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends FragmentActivity {
 
@@ -23,6 +24,9 @@ public class MainActivity extends FragmentActivity {
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
             // code to display marker
+                googleMap.addMarker(new MarkerOptions()
+                    .position(mDestinationLatLng)
+                    .title("Destination"));
         });
     }
 }
