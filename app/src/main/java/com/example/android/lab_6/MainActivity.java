@@ -15,6 +15,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import android.location.Location;
 
 public class MainActivity extends FragmentActivity {
 
@@ -41,7 +44,7 @@ public class MainActivity extends FragmentActivity {
                     .position(mDestinationLatLng)
                     .title("Destination"));
 
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDestinationLatLng, 17f));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDestinationLatLng, 5f));
 
                 displayMyLocation();
         });
@@ -61,6 +64,21 @@ public class MainActivity extends FragmentActivity {
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
         // If permission granted, display marker at current location
+        else {
+            mFusedLocationProviderClient.getLastLocation()
+                    .addOnCompleteListener(this, task -> {
+                        Location mLastKnownLocation = task.getResult();
+                        if (task.isSuccessful() && mLastKnownLocation != null) {
+                            mMap.addPolyline(new PolylineOptions().add(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()),
+                                    mDestinationLatLng
+                            ));
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(),
+                                    mLastKnownLocation.getLongitude())).title("Current Location"));
+                        }
+                    });
+        }
     }
 
     /**
